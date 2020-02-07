@@ -1,0 +1,43 @@
+---
+title: "Stat 479 Homework 1 Jillian Schat"
+author: "Jillian Schat"
+date: "2/5/2020"
+output: html_document
+---
+
+## # downloading the bridges dataset: California 2018
+# I saved this as an excel sheet, then as a comma separated file
+
+```{r}
+setwd("C:/Users/jillianschat/School/PhD/Classes/Stat 479")
+
+CA18 <- read.csv("CaliforniaBridges2018.csv")
+View(CA18)
+
+library(tidyverse)
+library(dplyr)
+library(ggplot2)
+
+colnames(CA18)
+```
+
+# columns of interest:
+# CA18$SERVICE_LEVEL_005C
+# CA18$LAT_016
+# CA18$LONG_017
+
+# Question: Are there certain regions of California with a higher service level?
+
+
+```{r}
+CA <- CA18[!(CA18$LAT_016 == 0 & CA18$LONG_017 == 0),] %>%
+by_location <- arrange(CA, CA$LAT_016, CA$LONG_017) %>%
+head(by_location) %>%
+ggplot(mapping = aes(y = by_location$LAT_016, x = by_location$LONG_017, 
+                     color = by_location$SERVICE_LEVEL_005C)) + 
+  geom_point()
+
+```
+
+# There seems to be a few location with higher service values, but these values are not grouped by
+# longitude or latitude.
